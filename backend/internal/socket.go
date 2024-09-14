@@ -1,4 +1,4 @@
-package socketn
+package internal
 
 import (
   "log"
