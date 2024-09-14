@@ -1,26 +1,28 @@
-package internal
+package socketn
 
 import (
   "log"
   "net/http"
   "github.com/gorilla/websocket"
-}
+ // "github.com/issa-char/goChat/internal"
+)
 
-// and upgrader to handle socket connnections
+
+// start
 var upgrader = websocket.Upgrader {
   ReadBufferSize: 1024,
   WriteBufferSize: 1024,
-  CheckOrigin: func(r *http.Request) bool {
+ CheckOrigin: func(r *http.Request) bool {
     return true
   },
 }
 
 // handling incoming websocket connections
 func handleConnections(w http.ResponseWriter, r *http.Request) {
-  ws, err := upgrader.Upgrader(w, r, nil)
+  ws, err := upgrader.Upgrade(w, r, nil)
   if err != nil {
     log.Printf("unable to upgrade: %v", err)
-    break
+   return 
   }
   defer ws.Close()
 
