@@ -4,7 +4,6 @@ import (
   "log"
   "net/http"
   "github.com/gorilla/websocket"
- // "github.com/issa-char/goChat/internal"
 )
 
 
@@ -18,7 +17,7 @@ var upgrader = websocket.Upgrader {
 }
 
 // handling incoming websocket connections
-func handleConnections(w http.ResponseWriter, r *http.Request) {
+func HandleConnections(w http.ResponseWriter, r *http.Request) {
   ws, err := upgrader.Upgrade(w, r, nil)
   if err != nil {
     log.Printf("unable to upgrade: %v", err)
