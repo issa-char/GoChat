@@ -85,7 +85,9 @@ func HandleConnections(w http.ResponseWriter, r *http.Request) {
 }
 
 // read messages from a websocket client
+// save incoming messages to the db
 func (client *Client) readMessages() {
+  collection := db.Database("goChat").Collection("messages") // create a collection
   for {
     _, message, err := client.conn.ReadMessage()
     if err != nil {
@@ -93,6 +95,18 @@ func (client *Client) readMessages() {
       manager.unregister <- client
       break
     }
+
+    // save the message to MongoDB
+    newMessage := Message{
+      Username: username,
+      Message: string(message),
+      Time: time.Now(),
+    }
+    _, err = collection.InsertOne(context.TODO(), newMessage)
+    if err != nil {
+      log.Printf("Error inserting message into MongoDB: %v", err)
+    }
+
     manager.broadcast <- message
   }
 }
