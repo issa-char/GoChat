@@ -13,6 +13,7 @@ func main() {
 
   //server listens on port 3000 and handles websocket connections at /ws
   http.HandleFunc("/ws", internal.validateJWT(internal.HandleConnections))
+  http.HandleFunc("/login", internal.login) // route to generate JWT token
 
   //
   go internal.manage.start()

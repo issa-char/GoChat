@@ -46,3 +46,22 @@ func validateJWT(next http.HandleFunc) http.HandleFunc {
   }
 }
 
+
+// create a JWT token for users
+// mock login handler to genearate a JWT token
+func login(w http.ResponseWriter, r *http.Request) {
+  username := r.URL.Query().Get("username")
+  if username == "" {
+    http.Error(w, "Missing username", http.StatusBadRequest)
+    return
+  }
+
+  token, err := generateJWT(username)
+  if err != nil {
+    http.Error(w, "error generating token", http.StatusInternalServeError)
+    return
+  }
+
+  w.Write([]byte(token))
+}
+
